@@ -1,10 +1,9 @@
 import { connect } from "dva";
-// import Redirect from "umi/redirect";
 import React from "react";
-import { Table, Divider, Form } from "antd"
+import { Table, Divider, Form, Popconfirm } from "antd";
 import { ConnectProps, ConnectState, ArticleModelState, } from "@/models/connect";
 
-import SearchForm from "./components/Form"
+import SearchForm from "./components/Form";
 
 interface ArticleComponentProps extends ConnectProps {
     article: ArticleModelState;
@@ -14,7 +13,6 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
     // constructor(props) {
     //     super(props)
     //     this.state = {
-
     //     }
     // }
     componentDidMount() {
@@ -25,16 +23,25 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
         })
     }
     
+    // 删除文章
+    handleDelete = (flag, id) => {
+        // console.log(id, '........delete')
+        const { dispatch } = this.props
+        dispatch({
+            type: "article/delArticle",
+            payload: { id: id}
+        })
+    }
+
+    // 发布文章
+    handleUpdate = (flag, id) => {
+        console.log(id, '........update')
+    }
+
     render() {
-        const { article: { list, total} } = this.props
-        // console.log(article.list, "............render")
+        const { dispatch, article: { list, total} } = this.props
 
         const columns = [
-            // {
-            //     title: "rowKey",
-            //     dataIndex: "id",
-            //     key: "id",
-            // },
             {
               title: "标题",
               dataIndex: "title",
@@ -49,7 +56,7 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
               title: "分类",
               dataIndex: "category",
               key: "category",
-            },
+            }, 
             {
                 title: "发布时间",
                 dataIndex: "created_at",
@@ -60,29 +67,23 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
                 key: 'action',
                 render: (text, record) => (
                   <span>
-                    <a href="">发布</a>
+                    <Popconfirm onConfirm={() => this.handleUpdate(true, record.id)}>
+                        <a href="javascript:;">发布</a>
+                    </Popconfirm>
                     <Divider type="vertical" /> 
                     <a href="javascript:;">查看 {record.name}</a>
                     <Divider type="vertical" />
-                    <a href="javascript:;">删除</a>
+                    <Popconfirm title="是否要删除该文章" onConfirm={() => this.handleDelete(true, record.id)}>
+                        <a>删除</a>
+                    </Popconfirm>
                   </span>
                 ),
             },
         ];
-        // const dataSource = [
-        //     {
-        //         "key": 1,
-        //         "title": "tomato1.0 系统",
-        //         "author": "leiyu",
-        //         "category": "编程",
-        //         "publish_at": "2019-08-03"
-        //     }
-        // ]
+        
         return (
             <div>
-                <SearchForm
-                    handleSubmit={() => {console.log(".......")}}
-                />
+                <SearchForm dispatch={dispatch}/>
                 <Table
                     rowKey="id"
                     columns={columns}
@@ -94,10 +95,6 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
 }
 
 // const ArticleComponent: React.FC<ArticleComponentProps> = props => {
-//     // const { list, total } = article
-//     componentDidMount() {
-
-//     }
 //     const columns = [
 //         {
 //           title: "标题",

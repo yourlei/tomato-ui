@@ -1,6 +1,7 @@
 import { Effect } from "dva";
 import { Reducer } from "redux";
-import { query as qeuryArtile } from '@/services/article';
+import { query as qeuryArtile, edit, delArticle } from '@/services/article';
+import { ExportDefaultDeclaration } from "@babel/types";
 export interface Article {
     id?: string;
     title?: string;
@@ -22,6 +23,8 @@ export interface ArticleModelType {
     state: ArticleModelState;
     effects: {
         fetch: Effect;
+        edit: Effect;
+        delArticle: Effect;
     };
     reducers: {
         setState: Reducer<ArticleModelState>;
@@ -38,13 +41,21 @@ const ArticleModel: ArticleModelType = {
     },
 
     effects: {
-        *fetch({ payload }, { call, put }) {
-            const response = yield call(qeuryArtile, payload)
-            const { code, data, total } = response
+        * fetch({ payload }, { call, put }) {
+            const res = yield call(qeuryArtile, payload)
+            const { data, total } = res
             
             yield put({
                 type: "save",
                 payload: {list: data, total: total} 
+            })
+        },
+        // 删除文章
+        * delArticle({ payload }, { call, put }) {
+            const res = yield call(delArticle, payload.id)
+            
+            yield put({
+                type: "fetch"
             })
         }
     },
@@ -55,13 +66,7 @@ const ArticleModel: ArticleModelType = {
                 ...state,
                 ...payload,
             }
-        },
-        // saveCurrentUser(state, action) {
-        //     return {
-        //         ...state,
-        //         currentUser: action.payload || {},
-        //     };
-        // },
+        }
     }
 }
 

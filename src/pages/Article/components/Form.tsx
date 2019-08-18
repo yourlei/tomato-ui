@@ -6,18 +6,49 @@ import styles from './article.less'
 
 export interface FormUtil {
   form?: WrappedFormUtils;
-//   handleSubmit?: 
 }
 
-const FormItem = Form.Item
+const FormItem = Form.Item;
 
+// 文章搜索表单
 class ArticlSearchForm extends React.Component<FormUtil, any> {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            dispatch: Function
+        }
+    }
+    // 响应点击查询按钮
+    handleSubmit = e => {
+        e.preventDefault();
+        const { dispatch, form } = this.props;
+
+        form.validateFields( (err, fieldsValue) => {
+            if (err) return;
+            dispatch({
+                type: "article/fetch",
+                payload: { where: { ...fieldsValue } }
+            })
+        })
+    }
+    // 响应点击重置按钮
+    handleFormReset = () => {
+        const { form, dispatch } = this.props;
+        form.resetFields();
+        // this.setState({
+        //   formValues: {},
+        // });
+        dispatch({
+          type: 'rule/fetch',
+          payload: {},
+        });
+    };
     render() {
         const {
             form: { getFieldDecorator },
-            handleSubmit,
         } = this.props;
-        console.log(handleSubmit, "........")
+        
         return (
             <Form layout="inline" className={styles.form}>
                     <FormItem label="文章标题">
@@ -31,14 +62,17 @@ class ArticlSearchForm extends React.Component<FormUtil, any> {
                     </FormItem>
                     <FormItem label="作者">
                         {
-                        getFieldDecorator('title', {
+                        getFieldDecorator('author', {
                             rules: [{ required: false, message: '输入文章作者' }]
                         })(<Input placeholder="请输入文章作者" />)
                         }
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
                             查询
+                        </Button>
+                        <Button style={{"marginLeft": 15}} onClick={this.handleFormReset}>
+                            重置
                         </Button>
                     </FormItem>
             </Form>
