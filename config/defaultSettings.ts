@@ -40,6 +40,7 @@ export interface DefaultSettings {
   // Usage: https://github.com/ant-design/ant-design-pro/pull/3517
   iconfontUrl: string;
   colorWeak: boolean;
+  ServerAPI: string;
 }
 
 export default {
@@ -57,4 +58,5 @@ export default {
   title: 'Tomato And Markdown',
   pwa: false,
   iconfontUrl: '',
+  ServerAPI: 'http://localhost:28095/api/v1',
 } as DefaultSettings;
