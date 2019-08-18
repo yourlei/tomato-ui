@@ -58,5 +58,6 @@ export default {
   title: 'Tomato And Markdown',
   pwa: false,
   iconfontUrl: '',
+  // 接口API   
   ServerAPI: 'http://localhost:28095/api/v1',
 } as DefaultSettings;

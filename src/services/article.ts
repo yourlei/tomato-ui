@@ -1,7 +1,5 @@
 import request from '@/utils/request';
 import config from '../../config/defaultSettings';
-import { async } from '_@types_q@1.5.2@@types/q';
-import { StringGradients } from 'antd/lib/progress/progress';
 
 const { ServerAPI } = config
 
