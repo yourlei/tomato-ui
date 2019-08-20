@@ -104,8 +104,14 @@ export default {
         {
             path: '/article',
             name: '文章管理',
-            icon: 'smail',
+            icon: 'project',
             component: './Article',
+        },
+        {
+            path: '/editor',
+            name: '写文章',
+            icon: 'medium',
+            component: './Editor'
         },
         {
           component: './404',
