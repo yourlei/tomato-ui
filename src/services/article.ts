@@ -7,6 +7,15 @@ const { ServerAPI } = config
 export async function query(params: object): Promise<any> {
     return request.get(`${ServerAPI}/admin/article?query=${JSON.stringify({ ...params })}`)
 }
+// 创建文章
+export async function create(params: object): Promise<any> {
+    console.log(params, "------------------")
+    return request.post(`${ServerAPI}/admin/article`, {
+        data: {
+            ...params
+        }
+    })
+}
 // 删除文章
 export async function delArticle(id: string): Promise<any> {
     return request.delete(`${ServerAPI}/admin/article/${id}`)

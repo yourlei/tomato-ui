@@ -39,7 +39,7 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
     }
 
     render() {
-        const { dispatch, article: { list, total} } = this.props
+        const { dispatch, article: { list, total } } = this.props
 
         const columns = [
             {
@@ -67,15 +67,15 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
                 key: 'action',
                 render: (text, record) => (
                   <span>
-                    <Popconfirm onConfirm={() => this.handleUpdate(true, record.id)}>
+                    {/* <Popconfirm onConfirm={() => this.handleUpdate(true, record.id)}>
                         <a href="javascript:;">发布</a>
                     </Popconfirm>
                     <Divider type="vertical" /> 
                     <a href="javascript:;">查看 {record.name}</a>
                     <Divider type="vertical" />
                     <Popconfirm title="是否要删除该文章" onConfirm={() => this.handleDelete(true, record.id)}>
-                        <a>删除</a>
-                    </Popconfirm>
+                        <a href="javascript:;">删除</a>
+                    </Popconfirm> */}
                   </span>
                 ),
             },
@@ -83,7 +83,7 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
         
         return (
             <div>
-                <SearchForm dispatch={dispatch}/>
+                {/* <SearchForm dispatch={dispatch}/> */}
                 <Table
                     rowKey="id"
                     columns={columns}
