@@ -67,7 +67,7 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
                 key: 'action',
                 render: (text, record) => (
                   <span>
-                    {/* <Popconfirm onConfirm={() => this.handleUpdate(true, record.id)}>
+                    <Popconfirm onConfirm={() => this.handleUpdate(true, record.id)}>
                         <a href="javascript:;">发布</a>
                     </Popconfirm>
                     <Divider type="vertical" /> 
@@ -75,7 +75,7 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
                     <Divider type="vertical" />
                     <Popconfirm title="是否要删除该文章" onConfirm={() => this.handleDelete(true, record.id)}>
                         <a href="javascript:;">删除</a>
-                    </Popconfirm> */}
+                    </Popconfirm>
                   </span>
                 ),
             },
@@ -83,7 +83,7 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
         
         return (
             <div>
-                {/* <SearchForm dispatch={dispatch}/> */}
+                <SearchForm dispatch={dispatch}/>
                 <Table
                     rowKey="id"
                     columns={columns}

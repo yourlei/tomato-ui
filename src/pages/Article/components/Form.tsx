@@ -1,8 +1,8 @@
-import React from 'react';
-import { Form, Input, Button } from 'antd';
-import { WrappedFormUtils } from 'antd/es/form/Form';
+import React from "react";
+import { Form, Input, Button } from "antd";
+import { WrappedFormUtils } from "antd/es/form/Form";
 
-import styles from './article.less'
+import styles from "./article.less"
 
 export interface FormUtil {
   form?: WrappedFormUtils;
@@ -40,7 +40,7 @@ class ArticlSearchForm extends React.Component<FormUtil, any> {
         //   formValues: {},
         // });
         dispatch({
-          type: 'rule/fetch',
+          type: "rule/fetch",
           payload: {},
         });
     };
@@ -52,9 +52,9 @@ class ArticlSearchForm extends React.Component<FormUtil, any> {
         return (
             <Form layout="inline" className={styles.form}>
                     <FormItem label="文章标题">
-                        {getFieldDecorator('title', {
+                        {getFieldDecorator("title", {
                             rules: [
-                                { required: false, message: '输入文章标题' }
+                                { required: false, message: "输入文章标题" }
                             ],
                         })(
                             <Input placeholder="请输入文章标题" />
@@ -62,8 +62,8 @@ class ArticlSearchForm extends React.Component<FormUtil, any> {
                     </FormItem>
                     <FormItem label="作者">
                         {
-                        getFieldDecorator('author', {
-                            rules: [{ required: false, message: '输入文章作者' }]
+                        getFieldDecorator("author", {
+                            rules: [{ required: false, message: "输入文章作者" }]
                         })(<Input placeholder="请输入文章作者" />)
                         }
                     </FormItem>
