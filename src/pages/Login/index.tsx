@@ -12,8 +12,17 @@ class LoginComponent extends React.Component<FormUtil, any> {
         super(props)
     }
     // 登录
-    handleSubmit = () => {
-         
+    handleSubmit = (e) => {
+        const { dispatch, form } = this.props;
+
+        form.validateFields((err, fieldsValue) => {
+            console.log(fieldsValue, "...........")
+            if (err) return;
+            dispatch({
+                type: "login/login",
+                payload: { ...fieldsValue }
+            })
+        })
     }
     render() {
         const FormItem = Form.Item
@@ -23,7 +32,7 @@ class LoginComponent extends React.Component<FormUtil, any> {
             <div className={styles.formWrap}>
                 <Form>
                     <FormItem>
-                        {getFieldDecorator("email", {
+                        {getFieldDecorator("account", {
                             rules: [
                                 { required: true, message: "请输入正确的邮箱账号" }
                             ],
@@ -38,7 +47,7 @@ class LoginComponent extends React.Component<FormUtil, any> {
                                 { required: true, message: "请输入正确的登录密码" }
                             ],
                         })(
-                            <Input placeholder="请输入密码" />
+                            <Input placeholder="请输入密码" type="password"/>
                         )}
                     </FormItem>
                     <FormItem>

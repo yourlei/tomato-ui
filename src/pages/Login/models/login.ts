@@ -1,14 +1,18 @@
 import { Effect } from "dva";
 import { Reducer } from "redux";
+import { message } from "antd";
+import { routerRedux } from 'dva/router';
+import { loginAPI } from "@/services/login";
 
 export interface LoginModelType {
     namespace: "login";
     state: {};
     effects: {
-        fetch: Effect;
+        login: Effect;
+        logout: Effect;
     };
     reducers: {
-        setState: Reducer<{}>;
+        save: Reducer<{}>;
     }
 }
 
@@ -18,19 +22,31 @@ const ArticleModel: LoginModelType = {
     state: {
         userId: "",
         roleId: "",
-        email: "",
+        account: "",
         token: ""
     },
 
     effects: {
-        * fetch({ payload }, { call, put }) {
-            // const res = yield call(qeuryArtile, payload)
-            // const { data } = res
-
-            // yield put({
-            //     type: "save",
-            //     payload: { }
-            // })
+        * login({ payload }, { call, put }) {
+            const res = yield call(loginAPI, payload)
+            const { code, data } = res
+            
+            if (code) {
+                message.info("登录失败, 账户或密码不正确")
+                return
+            }
+            // TODO 
+            // 缓存用户信息, token
+            // 跳转到首页
+            yield put(
+                routerRedux.replace({
+                    pathname: "/article",
+                    search: ""
+                })
+            )
+        },
+        * logout({ payload }, { call, put }) {
+            //
         }
     },
 
