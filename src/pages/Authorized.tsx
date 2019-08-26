@@ -30,7 +30,7 @@ const getRouteAuthority = (path: string, routeData: Route[]) => {
 const AuthComponent: React.FC<AuthComponentProps> = ({
   children,
   route = {
-    routes: [],
+    routes: ["/article", "/editor"],
   },
   location = {
     pathname: '',
@@ -40,6 +40,7 @@ const AuthComponent: React.FC<AuthComponentProps> = ({
   const { currentUser } = user;
   const { routes = [] } = route;
   const isLogin = currentUser && currentUser.name;
+  console.log(currentUser, isLogin, "==========")
   return (
     <Authorized
       authority={getRouteAuthority(location.pathname, routes) || ''}

@@ -5,5 +5,4 @@ sudo docker run -dit \
 -p 8000:8000 \
 -v $PWD:/var/www/ \
 -w /var/www \
-node10-slim:latest
-
+registry.cn-hangzhou.aliyuncs.com/ibbd/node
