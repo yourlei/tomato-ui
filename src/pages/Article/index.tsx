@@ -68,13 +68,13 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
                 render: (text, record) => (
                   <span>
                     <Popconfirm onConfirm={() => this.handleUpdate(true, record.id)}>
-                        <a href="javascript:;">发布</a>
+                        <a href="">发布</a>
                     </Popconfirm>
                     <Divider type="vertical" /> 
-                    <a href="javascript:;">查看 {record.name}</a>
+                    <a href="">查看 {record.name}</a>
                     <Divider type="vertical" />
                     <Popconfirm title="是否要删除该文章" onConfirm={() => this.handleDelete(true, record.id)}>
-                        <a href="javascript:;">删除</a>
+                        <a href="">删除</a>
                     </Popconfirm>
                   </span>
                 ),
