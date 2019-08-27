@@ -1,10 +1,13 @@
+/**
+ * @name LoginComponent
+ * @desc 登录页面
+ * 用户登录成功后用户信息写入localstorage
+ */
 import React from "react";
 import { connect } from "dva";
 import { Form, Input, Button } from "antd";
 import { FormUtil } from "@components/Form";
 import styles from "./login.less";
-import Button from "antd/es/button/button";
-
 
 @Form.create()
 class LoginComponent extends React.Component<FormUtil, any> {
@@ -16,7 +19,6 @@ class LoginComponent extends React.Component<FormUtil, any> {
         const { dispatch, form } = this.props;
 
         form.validateFields((err, fieldsValue) => {
-            console.log(fieldsValue, "...........")
             if (err) return;
             dispatch({
                 type: "login/login",
@@ -52,7 +54,7 @@ class LoginComponent extends React.Component<FormUtil, any> {
                     </FormItem>
                     <FormItem>
                         <Button type="primary" onClick={this.handleSubmit}>
-                            查询
+                            登录
                         </Button>
                     </FormItem>
                 </Form>

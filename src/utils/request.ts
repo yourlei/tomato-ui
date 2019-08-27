@@ -4,6 +4,7 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import { getToken } from '@/utils/storage'
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -47,5 +48,71 @@ const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
+
+/**
+ * request拦截器, 改变url 或 options
+ */
+// request.interceptors.request.use((url, options) => {
+//     console.log("request >>>>>>>>>>>>>")
+//     return (
+//         {
+//             url: `${url}&interceptors=yes`,
+//             options: { ...options, interceptors: true },
+//         }
+//     );
+// });
+
+/**
+ * response拦截器, 处理response 
+ */
+// request.interceptors.response.use((response, options) => {
+//     console.log("response <<<<<<<<<<<<")
+//     response.headers.append('interceptors', 'yes yo');
+//     return response;
+// });
+
+/**
+ * Middleware,中间件
+ * 添加请求前或响应后的操作, 注意中间件执行流程
+ * request.use(async (ctx, next) => {
+ *      console.log('a1');
+ *      await next();
+ *      console.log('a2');
+ * })
+ * 
+ * request.use(async (ctx, next) => {
+ *      console.log('b1');
+ *      await next();
+ *      console.log('b2');
+ *  })
+ * 
+ * 输出: a1 -> b1 -> response -> b2 -> a2
+ */
+// 中间件，对请求前、响应后做处理
+request.use(async (ctx, next) => {
+    const { req } = ctx;
+    const { url, options } = req;
+    // options property: method, params, headers
+    // 添加前缀、后缀
+    // ctx.req.url = `/api/v1/${url}`;
+
+    // header添加token
+    if (url.includes("admin")) {
+        ctx.req.options = {
+            ...options,
+            headers: {
+                token: getToken()
+            }
+        };
+    }
+    await next();
+
+    const { res } = ctx;
+    const { success = false } = res; // 假设返回结果为 : { success: false, errorCode: 'B001' }
+    if (!success) {
+        // 对异常情况做对应处理
+    }
+    // 默认返回res, 即接口响应的数据
+})
 
 export default request;

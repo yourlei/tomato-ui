@@ -3,6 +3,7 @@ import { Reducer } from "redux";
 import { message } from "antd";
 import { routerRedux } from 'dva/router';
 import { loginAPI } from "@/services/login";
+import { setUser }  from "@/utils/storage";
 
 export interface LoginModelType {
     namespace: "login";
@@ -36,7 +37,8 @@ const ArticleModel: LoginModelType = {
                 return
             }
             // TODO 
-            // 缓存用户信息, token
+            // 缓存用户信息, token等
+            setUser(data)
             // 跳转到首页
             yield put(
                 routerRedux.replace({
