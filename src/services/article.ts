@@ -9,7 +9,6 @@ export async function query(params: object): Promise<any> {
 }
 // 创建文章
 export async function create(params: object): Promise<any> {
-    console.log(params, "------------------")
     return request.post(`${ServerAPI}/admin/article`, {
         data: {
             ...params

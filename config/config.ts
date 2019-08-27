@@ -90,17 +90,15 @@ export default {
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [
     {
+      path: "/login",
+      component: "./Login"
+    },
+    {
       path: '/',
-      component: '../layouts/BasicLayout',
-      Routes: ['src/pages/Authorized'],
-      authority: ['admin', 'user'],
-      routes: [
-        {
-          path: '/',
-          name: 'welcome',
-          icon: 'smile',
-          component: './Welcome',
-        },
+      // component: '../layouts/BasicLayout',
+      // Routes: ['src/pages/Authorized'],
+      // authority: ['admin', 'user'],
+        routes: [
         {
             path: '/article',
             name: '文章管理',
