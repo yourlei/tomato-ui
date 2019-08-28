@@ -7,8 +7,9 @@ import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
 import { Form, Input, message } from "antd";
 import { WrappedFormUtils } from "antd/es/form/Form";
+import { ConnectState, } from "@/models/connect";
 import EditableTagGroup from "./components/MyTag";
-import { create, query, edit } from '@/services/article';
+import { create, edit } from '@/services/article';
 
 export interface FormUtil {
     form?: WrappedFormUtils;
@@ -19,14 +20,9 @@ class Editor extends React.Component<FormUtil, any> {
      * markdown编辑器 
      * Usage see: https://www.yuque.com/braft-editor/be/mrgy92
      */
-    /*
     constructor(props) {
         super(props)
-        this.state = {
-            contextValue: String
-        }
     }
-    */
     state = {
         // 当前编辑的文章uuid
         uuid: "",
@@ -35,14 +31,14 @@ class Editor extends React.Component<FormUtil, any> {
         editorState: BraftEditor.createEditorState(null),
         dispatch: Function,
     }
-    // async componentDidMount () {
+    async componentDidMount () {
         // 假设此处从服务端获取html格式的编辑器内容
         // const htmlContent = await fetchEditorContent()
         // 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorStat
         // this.setState({
         //     editorState: BraftEditor.createEditorState(htmlContent)
         // })
-    // }
+    }
     // 保存编辑器内容
     submitContent = async () => {
         let title = ""
@@ -161,4 +157,6 @@ class Editor extends React.Component<FormUtil, any> {
     }
 }
 
-export default Form.create()(Editor)
+export default connect(({ editor }: ConnectState) => ({
+    editor
+}))(Form.create()(Editor))

@@ -6,7 +6,7 @@
 import React from "react";
 import { connect } from "dva";
 import { Form, Input, Button } from "antd";
-import { ConnectProps, ConnectState, } from "@/models/connect";
+import { ConnectState, } from "@/models/connect";
 import { FormUtil } from "@components/Form";
 import styles from "./login.less";
 
@@ -17,7 +17,7 @@ class LoginComponent extends React.Component<FormUtil, any> {
     }
     // 登录
     handleSubmit = (e) => {
-        const { dispatch, form, login } = this.props;
+        const { dispatch, form } = this.props;
 
         form.validateFields((err, fieldsValue) => {
             if (err) return;
@@ -67,6 +67,3 @@ class LoginComponent extends React.Component<FormUtil, any> {
 export default connect(({ login }: ConnectState) => ({
     login,
 }))(Form.create()(LoginComponent));
-// export default connect(({ login }: ConnectState) => ({
-//     login,
-// }))(LoginComponent);

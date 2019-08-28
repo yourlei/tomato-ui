@@ -1,6 +1,9 @@
 import { Effect } from "dva";
 import { Subscription } from 'dva';
 import { Reducer } from "redux";
+import { getUser } from "@/utils/storage";
+import { routerRedux } from "dva/router";
+import router from 'umi/router';
 
 export interface Editor {
     id: string;
@@ -19,6 +22,7 @@ export interface EditorModelType {
     state: EditorModelState;
     effects: {
         fetch: Effect;
+        generateUrl: Effect;
     };
     reducers: {
         setState: Reducer<EditorModelState>;
@@ -41,6 +45,20 @@ const EditorModel: EditorModelType = {
             // const res = yield call(qeuryArtile, payload)
             
         },
+        /**
+         * 通过用户id,文章id生成url路径
+         */
+        * generateUrl(_, { call, put }) {
+            const session = JSON.parse(getUser())
+            const articleId = "546734fkdfd"
+            
+            router.push(`/editor/${session.id}/${articleId}`)
+            // yield put(routerRedux.replace({
+            //     pathname: `/editor/${session.id}/${articleId}`,
+            //     search: ""
+            // }))
+
+        }
     },
 
     reducers: {
@@ -54,8 +72,6 @@ const EditorModel: EditorModelType = {
 
     subscriptions: {
         setup({ history, dispatch }): void {
-          // Subscribe history(url) change, trigger `load` action if pathname is `/`
-          
         },
     }
 }

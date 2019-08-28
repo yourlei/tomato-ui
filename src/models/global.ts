@@ -154,6 +154,12 @@ const GlobalModel: GlobalModelType = {
                 type: "global/goHome"
             })
         }
+        // 点击写文章按钮
+        if (location.pathname == "/editor/:id") {
+            dispatch({
+                type: "editor/generateUrl"
+            })
+        }
       });
     },
   },
