@@ -102,18 +102,12 @@ const GlobalModel: GlobalModelType = {
         },
       });
     },
-    // 跳转到首页
+    // 更新isLogin状态, 跳转到首页
     * goHome({ payload }, { put, select }) {
         yield put({
             type: "global/setState",
             payload: { isLogin: true }
         })
-        // yield put(
-        //     routerRedux.replace({
-        //         pathname: "/article",
-        //         search: ""
-        //     })
-        // )
     }
   },
 

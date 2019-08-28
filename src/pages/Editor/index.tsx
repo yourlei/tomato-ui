@@ -10,7 +10,6 @@ import { WrappedFormUtils } from "antd/es/form/Form";
 import EditableTagGroup from "./components/MyTag";
 import { create, query, edit } from '@/services/article';
 
-
 export interface FormUtil {
     form?: WrappedFormUtils;
 }
@@ -61,7 +60,7 @@ class Editor extends React.Component<FormUtil, any> {
         }
         const result = await this.hadArticle(title, "ben")
         const { code , data } = result
-        // console.log(result, "............")
+
         if (0 == code && data) {
             const { id } = data[0]
             // 更新文章
@@ -86,11 +85,6 @@ class Editor extends React.Component<FormUtil, any> {
                 uuid: data.id
             })
         }
-        
-        // const { code, data } = res
-        // if (102 == code) {
-
-        // }
     }
     // 检查文章是否已存在
     hadArticle = async (title, author) => {

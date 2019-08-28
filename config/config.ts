@@ -106,7 +106,7 @@ export default {
             component: './Article',
         },
         {
-            path: '/editor',
+            path: '/editor/:id?/:id?',
             name: '写文章',
             icon: 'medium',
             component: './Editor'

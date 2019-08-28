@@ -105,7 +105,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         onCollapse={handleMenuCollapse}
         menuItemRender={(menuItemProps, defaultDom) => {
             if (menuItemProps.isUrl) {
-            return defaultDom;
+                return defaultDom;
             }
             return <Link to={menuItemProps.path}>{defaultDom}</Link>;
         }}
