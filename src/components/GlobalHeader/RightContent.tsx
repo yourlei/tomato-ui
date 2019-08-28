@@ -55,15 +55,17 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
       >
         <a
           target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
+        //   href="https://pro.ant.design/docs/getting-started"
           rel="noopener noreferrer"
           className={styles.action}
         >
           <Icon type="question-circle-o" />
         </a>
       </Tooltip>
+      {/* 隐藏默认的头像 */}
       <Avatar />
-      <SelectLang className={styles.action} />
+      {/* 隐藏默认的语言选择 */}
+      {/* <SelectLang className={styles.action} /> */}
     </div>
   );
 };

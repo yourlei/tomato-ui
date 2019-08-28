@@ -89,10 +89,10 @@ export default {
   devtool: isAntDesignProPreview ? 'source-map' : false,
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [
-    {
-      path: "/login",
-      component: "./Login"
-    },
+    // {
+    //   path: "/login",
+    //   component: "./Login"
+    // },
     {
       path: '/',
       component: '../layouts/BasicLayout',
@@ -100,7 +100,7 @@ export default {
       // authority: ['admin', 'user'],
         routes: [
         {
-            path: '/article',
+            path: '/',
             name: '文章管理',
             icon: 'project',
             component: './Article',

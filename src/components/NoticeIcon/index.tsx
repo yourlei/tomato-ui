@@ -48,7 +48,7 @@ export default class NoticeIcon extends Component<NoticeIconProps> {
     onViewMore: (): void => {},
     loading: false,
     clearClose: false,
-    emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
+    // emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
   };
 
   state = {

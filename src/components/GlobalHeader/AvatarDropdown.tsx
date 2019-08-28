@@ -29,16 +29,17 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
       return;
     }
-    router.push(`/account/${key}`);
+    // router.push(`/account/${key}`);
   };
 
   render(): React.ReactNode {
-    const { currentUser = {}, menu } = this.props;
-    if (!menu) {
+    const { currentUser = {}, menu, login } = this.props;
+    
+    if (menu) {
       return (
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={styles.name}>{currentUser.name}</span>
+          <span className={styles.name}>{login.userName}</span>
         </span>
       );
     }
@@ -64,7 +65,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={styles.name}>{currentUser.name}</span>
+          <span className={styles.name}>{login.userName}</span>
         </span>
       </HeaderDropdown>
     ) : (
@@ -72,6 +73,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     );
   }
 }
-export default connect(({ user }: ConnectState) => ({
+export default connect(({ user, login }: ConnectState) => ({
   currentUser: user.currentUser,
+  login,
 }))(AvatarDropdown);

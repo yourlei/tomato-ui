@@ -40,7 +40,7 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
     >
       <div className={styles.container}>
         <div className={styles.lang}>
-          <SelectLang />
+          {/* <SelectLang /> */}
         </div>
         <div className={styles.content}>
           <div className={styles.top}>

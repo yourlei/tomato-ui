@@ -154,7 +154,7 @@ const GlobalModel: GlobalModelType = {
         if (typeof window.ga !== 'undefined') {
           window.ga('send', 'pageview', pathname + search);
         }
-
+        // 检查localstorage中的信息是否过期
         if (getToken() != null) {
             dispatch({
                 type: "global/goHome"
