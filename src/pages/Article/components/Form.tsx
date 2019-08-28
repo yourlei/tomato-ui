@@ -37,7 +37,7 @@ class ArticlSearchForm extends React.Component<FormUtil, any> {
         const { form, dispatch } = this.props;
         form.resetFields();
         dispatch({
-          type: "rule/fetch",
+          type: "article/fetch",
           payload: {},
         });
     };

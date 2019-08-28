@@ -20,6 +20,8 @@ import { ConnectState, Dispatch } from '@/models/connect';
 import { isAntDesignPro } from '@/utils/utils';
 import logo from '../assets/logo.svg';
 
+import LoginComponent from "../pages/Login/index"
+
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
     [path: string]: MenuDataItem;
@@ -71,7 +73,7 @@ const footerRender: BasicLayoutProps['footerRender'] = (_, defaultDom) => {
 };
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings } = props;
+  const { dispatch, children, settings, isLogin } = props;
   /**
    * constructor
    */
@@ -84,6 +86,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       dispatch({
         type: 'settings/getSetting',
       });
+      
     }
   }, []);
 
@@ -97,47 +100,49 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       payload,
     });
 
-  return (
-    <ProLayout
-      logo={logo}
-      onCollapse={handleMenuCollapse}
-      menuItemRender={(menuItemProps, defaultDom) => {
-        if (menuItemProps.isUrl) {
-          return defaultDom;
-        }
-        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
-      }}
-      breadcrumbRender={(routers = []) => [
-        {
-          path: '/',
-          breadcrumbName: formatMessage({
-            id: 'menu.home',
-            defaultMessage: 'Home',
-          }),
-        },
-        ...routers,
-      ]}
-      itemRender={(route, params, routes, paths) => {
-        const first = routes.indexOf(route) === 0;
-        return first ? (
-          <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-        ) : (
-          <span>{route.breadcrumbName}</span>
-        );
-      }}
-      footerRender={footerRender}
-      menuDataRender={menuDataRender}
-      formatMessage={formatMessage}
-      rightContentRender={rightProps => <RightContent {...rightProps} />}
-      {...props}
-      {...settings}
-    >
-      {children}
-    </ProLayout>
-  );
+    return isLogin ? (<ProLayout
+        logo={logo}
+        onCollapse={handleMenuCollapse}
+        menuItemRender={(menuItemProps, defaultDom) => {
+            if (menuItemProps.isUrl) {
+            return defaultDom;
+            }
+            return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        }}
+        breadcrumbRender={(routers = []) => [
+            {
+            path: '/',
+            breadcrumbName: formatMessage({
+                id: 'menu.home',
+                defaultMessage: 'Home',
+            }),
+            },
+            ...routers,
+        ]}
+        itemRender={(route, params, routes, paths) => {
+            const first = routes.indexOf(route) === 0;
+            return first ? (
+            <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+            ) : (
+            <span>{route.breadcrumbName}</span>
+            );
+        }}
+        footerRender={footerRender}
+        menuDataRender={menuDataRender}
+        formatMessage={formatMessage}
+        rightContentRender={rightProps => <RightContent {...rightProps} />}
+        {...props}
+        {...settings}
+        >
+            {children}
+        </ProLayout>
+    ) : (<div style={{"position": "relative", "width": "100%", "height":"100%"}}>
+            <LoginComponent />
+        </div>)
 };
 
 export default connect(({ global, settings }: ConnectState) => ({
   collapsed: global.collapsed,
+  isLogin: global.isLogin,
   settings,
 }))(BasicLayout);

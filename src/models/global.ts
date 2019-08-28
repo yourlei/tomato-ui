@@ -1,9 +1,10 @@
 import { Reducer } from 'redux';
 import { Subscription } from 'dva';
-
+import { routerRedux } from 'dva/router';
 import { Effect } from './connect.d';
 import { NoticeIconData } from '@/components/NoticeIcon';
 import { queryNotices } from '@/services/user';
+import { getToken }  from "@/utils/storage"
 
 export interface NoticeItem extends NoticeIconData {
   id: string;
@@ -14,6 +15,7 @@ export interface NoticeItem extends NoticeIconData {
 export interface GlobalModelState {
   collapsed: boolean;
   notices: NoticeItem[];
+  isLogin?: boolean;
 }
 
 export interface GlobalModelType {
@@ -38,6 +40,7 @@ const GlobalModel: GlobalModelType = {
   state: {
     collapsed: false,
     notices: [],
+    isLogin: false,
   },
 
   effects: {
@@ -59,7 +62,7 @@ const GlobalModel: GlobalModelType = {
       });
     },
     *clearNotices({ payload }, { put, select }) {
-      yield put({
+        yield put({
         type: 'saveClearedNotices',
         payload,
       });
@@ -99,6 +102,19 @@ const GlobalModel: GlobalModelType = {
         },
       });
     },
+    // 跳转到首页
+    * goHome({ payload }, { put, select }) {
+        yield put({
+            type: "global/setState",
+            payload: { isLogin: true }
+        })
+        // yield put(
+        //     routerRedux.replace({
+        //         pathname: "/article",
+        //         search: ""
+        //     })
+        // )
+    }
   },
 
   reducers: {
@@ -122,14 +138,27 @@ const GlobalModel: GlobalModelType = {
         notices: state.notices.filter((item): boolean => item.type !== payload),
       };
     },
+    // save state
+    setState(state, { payload }): GlobalModelState {
+        return {
+            ...state,
+            isLogin: payload
+        }
+    },
   },
 
   subscriptions: {
-    setup({ history }): void {
+    setup({ history, dispatch }): void {
       // Subscribe history(url) change, trigger `load` action if pathname is `/`
       history.listen(({ pathname, search }): void => {
         if (typeof window.ga !== 'undefined') {
           window.ga('send', 'pageview', pathname + search);
+        }
+
+        if (getToken() != null) {
+            dispatch({
+                type: "global/goHome"
+            })
         }
       });
     },

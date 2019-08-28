@@ -1,64 +1,78 @@
-import { AnyAction, Reducer } from 'redux';
-import { parse, stringify } from 'qs';
-
-import { EffectsCommandMap } from 'dva';
+import { Effect } from "dva";
+import { Reducer } from "redux";
+import { message } from "antd";
 import { routerRedux } from 'dva/router';
+import { loginAPI } from "@/services/login";
+import { setUser }  from "@/utils/storage";
 
-export function getPageQuery(): {
-  [key: string]: string;
-} {
-  return parse(window.location.href.split('?')[1]);
+export interface LoginModelState {
+    userId?:  string | null,
+    roleId?:  string | null,
+    account?: string | null,
+    token?: string | null
 }
 
-export type Effect = (
-  action: AnyAction,
-  effects: EffectsCommandMap & { select: <T>(func: (state: {}) => T) => T },
-) => void;
-
 export interface ModelType {
-  namespace: string;
-  state: {};
-  effects: {
-    logout: Effect;
-  };
-  reducers: {
-    changeLoginStatus: Reducer<{}>;
-  };
+    namespace: "login";
+    state: LoginModelState;
+    effects: {
+        fetch: Effect;
+        logout: Effect;
+    };
+    reducers: {
+        save: Reducer<LoginModelState>;
+    }
 }
 
 const Model: ModelType = {
-  namespace: 'defaultLogin',
+    namespace: "login",
 
-  state: {
-    status: undefined,
-  },
-
-  effects: {
-    *logout(_, { put }) {
-      const { redirect } = getPageQuery();
-      // redirect
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          }),
-        );
-      }
+    state: {
+        userId: null,
+        roleId: null,
+        account: null,
+        token: null
     },
-  },
 
-  reducers: {
-    changeLoginStatus(state, { payload }) {
-      return {
-        ...state,
-        status: payload.status,
-        type: payload.type,
-      };
+    effects: {
+        * fetch({ payload }, { call, put }) {
+            const res = yield call(loginAPI, payload)
+            const { code, data } = res
+            if (code) {
+                message.info("登录失败, 账户或密码不正确")
+                return
+            }
+            // TODO 
+            // 缓存用户信息, token等
+            setUser(data)
+            // 更新global isLogin
+            yield put({
+                type: "global/setState",
+                payload: {
+                    isLogin: true
+                }
+            })
+            // 跳转到首页
+            yield put(
+                routerRedux.replace({
+                    pathname: "/article",
+                    search: ""
+                })
+            )
+        },
+        // * logout({ payload }, { call, put }) {
+        //     //
+        // }
     },
-  },
-};
+
+    reducers: {
+        save(state, { payload }) {
+            return {
+                ...state,
+                ...payload,
+            }
+        }
+    }
+}
 
 export default Model;

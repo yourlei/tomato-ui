@@ -6,8 +6,15 @@ import { GlobalModelState } from './global';
 import { DefaultSettings as SettingModelState } from '../../config/defaultSettings';
 import { UserModelState } from './user';
 import { ArticleModelState } from "./article"
+import { LoginModelState } from "./login"
 
-export { GlobalModelState, SettingModelState, UserModelState };
+export { 
+    GlobalModelState, 
+    SettingModelState,
+    UserModelState, 
+    ArticleModelState,
+    LoginModelState,
+};
 
 export interface Loading {
   global: boolean;
@@ -18,6 +25,7 @@ export interface Loading {
     setting?: boolean;
     user?: boolean;
     article?: boolean;
+    login?: boolean;
   };
 }
 
@@ -27,6 +35,7 @@ export interface ConnectState {
   settings: SettingModelState;
   user: UserModelState;
   article: ArticleModelState;
+  login: LoginModelState;
 }
 
 export type Effect = (
