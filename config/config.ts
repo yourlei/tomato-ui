@@ -78,106 +78,112 @@ if (isAntDesignProPreview) {
 }
 
 export default {
-  plugins,
-  block: {
-    defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
-  },
-  hash: true,
-  targets: {
-    ie: 11,
-  },
-  devtool: isAntDesignProPreview ? 'source-map' : false,
-  // umi routes: https://umijs.org/zh/guide/router.html
-  routes: [
-    // {
-    //   path: "/login",
-    //   component: "./Login"
-    // },
-    {
-      path: '/',
-      component: '../layouts/BasicLayout',
-      // Routes: ['src/pages/Authorized'],
-      // authority: ['admin', 'user'],
-        routes: [
+    plugins,
+    block: {
+        defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
+    },
+    hash: true,
+    targets: {
+        ie: 11,
+    },
+    devtool: isAntDesignProPreview ? 'source-map' : false,
+    // umi routes: https://umijs.org/zh/guide/router.html
+    routes: [
+        // {
+        //   path: "/login",
+        //   component: "./Login"
+        // },
         {
-            path: '/',
-            name: '文章管理',
-            icon: 'project',
-            component: './Article',
-        },
-        {
-            path: '/editor/:id?/:id?',
-            name: '写文章',
-            icon: 'medium',
+            path: '/markdown/editor',
+            // name: '写文章',
+            // icon: 'medium',
             component: './Editor'
         },
         {
-          component: './404',
+            path: '/',
+            component: '../layouts/BasicLayout',
+            // Routes: ['src/pages/Authorized'],
+            // authority: ['admin', 'user'],
+            routes: [
+                {
+                    path: '/',
+                    name: '文章管理',
+                    icon: 'project',
+                    component: './Article',
+                },
+                // {
+                //     path: '/editor/:id?/:id?',
+                //     name: '写文章',
+                //     icon: 'medium',
+                //     component: './Editor'
+                // },
+                {
+                    component: './404',
+                },
+            ],
         },
-      ],
+        {
+            component: './404',
+        }
+    ],
+    // Theme for antd: https://ant.design/docs/react/customize-theme-cn
+    theme: {
+        'primary-color': primaryColor,
     },
-    {
-      component: './404',
+    define: {
+        ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
+        ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
     },
-  ],
-  // Theme for antd: https://ant.design/docs/react/customize-theme-cn
-  theme: {
-    'primary-color': primaryColor,
-  },
-  define: {
-    ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
-      ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
-  },
-  ignoreMomentLocale: true,
-  lessLoaderOptions: {
-    javascriptEnabled: true,
-  },
-  disableRedirectHoist: true,
-  cssLoaderOptions: {
-    modules: true,
-    getLocalIdent: (
-      context: {
-        resourcePath: string;
-      },
-      _: string,
-      localName: string,
-    ) => {
-      if (
-        context.resourcePath.includes('node_modules') ||
-        context.resourcePath.includes('ant.design.pro.less') ||
-        context.resourcePath.includes('global.less')
-      ) {
+    ignoreMomentLocale: true,
+    lessLoaderOptions: {
+        javascriptEnabled: true,
+    },
+    disableRedirectHoist: true,
+    cssLoaderOptions: {
+        modules: true,
+        getLocalIdent: (
+            context: {
+                resourcePath: string;
+            },
+            _: string,
+            localName: string,
+        ) => {
+        if (
+            context.resourcePath.includes('node_modules') ||
+            context.resourcePath.includes('ant.design.pro.less') ||
+            context.resourcePath.includes('global.less')
+        ) {
+            return localName;
+        }
+
+        const match = context.resourcePath.match(/src(.*)/);
+
+        if (match && match[1]) {
+            const antdProPath = match[1].replace('.less', '');
+            const arr = slash(antdProPath)
+            .split('/')
+            .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
+            .map((a: string) => a.toLowerCase());
+            return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
+        }
+
         return localName;
-      }
-
-      const match = context.resourcePath.match(/src(.*)/);
-
-      if (match && match[1]) {
-        const antdProPath = match[1].replace('.less', '');
-        const arr = slash(antdProPath)
-          .split('/')
-          .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
-          .map((a: string) => a.toLowerCase());
-        return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
-      }
-
-      return localName;
+        },
     },
-  },
-  manifest: {
-    basePath: '/',
-  },
-  chainWebpack: webpackPlugin,
-  
-  proxy: {
-    // '/server/api/': {
-    //   target: 'https://preview.pro.ant.design/',
-    //   changeOrigin: true,
-    //   pathRewrite: { '^/server': '' },
-    // },
-    // '/api/v1': {
-    //     target: 'http://localhost:28095/api/v1'
-    // }
-  },
-  
+    manifest: {
+        basePath: '/',
+    },
+    chainWebpack: webpackPlugin,
+    
+    proxy: {
+        // '/server/api/': {
+        //   target: 'https://preview.pro.ant.design/',
+        //   changeOrigin: true,
+        //   pathRewrite: { '^/server': '' },
+        // },
+        // '/api/v1': {
+        //     target: 'http://localhost:28095/api/v1'
+        // }
+    },
+    
 } as IConfig;

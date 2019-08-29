@@ -3,8 +3,8 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
-import { notification } from 'antd';
-import { getToken } from '@/utils/storage'
+import { notification, message } from 'antd';
+import { getToken, removeUser } from '@/utils/storage'
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -32,11 +32,16 @@ const errorHandler = (error: { response: Response }): Response => {
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
-
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText,
-    });
+    // 登录过期,刷新并跳转到登录页
+    if (401 === status) {
+        removeUser()
+        location.replace("/")
+        message.info("登录已失效, 请重新登录")
+    }
+    // notification.error({
+    //   message: `请求错误 ${status}: ${url}`,
+    //   description: errorText,
+    // });
   }
   return response;
 };

@@ -8,69 +8,85 @@ import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
+import { routerRedux } from 'dva/router';
 
 export type SiderTheme = 'light' | 'dark';
 export interface GlobalHeaderRightProps extends ConnectProps {
-  theme?: SiderTheme;
-  layout: 'sidemenu' | 'topmenu';
+    theme?: SiderTheme;
+    layout: 'sidemenu' | 'topmenu';
 }
 
 const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
-  const { theme, layout } = props;
-  let className = styles.right;
+    const { theme, layout, dispatch } = props;
+    let className = styles.right;
 
-  if (theme === 'dark' && layout === 'topmenu') {
-    className = `${styles.right}  ${styles.dark}`;
-  }
+    if (theme === 'dark' && layout === 'topmenu') {
+        className = `${styles.right}  ${styles.dark}`;
+    }
+    // 点击写文章按钮
+    const clickEditorBtn = (e) => {
+        // e.preventDefault()
+        location.href="/markdown/editor"
+        // dispatch(routerRedux.push({
+        //     pathname: "/markdown/editor"
+        // }))
+    }
 
-  return (
-    <div className={className}>
-      <HeaderSearch
-        className={`${styles.action} ${styles.search}`}
-        placeholder={formatMessage({
-          id: 'component.globalHeader.search',
-        })}
-        dataSource={[
-          formatMessage({
-            id: 'component.globalHeader.search.example1',
-          }),
-          formatMessage({
-            id: 'component.globalHeader.search.example2',
-          }),
-          formatMessage({
-            id: 'component.globalHeader.search.example3',
-          }),
-        ]}
-        onSearch={value => {
-          console.log('input', value);
-        }}
-        onPressEnter={value => {
-          console.log('enter', value);
-        }}
-      />
-      <Tooltip
-        title={formatMessage({
-          id: 'component.globalHeader.help',
-        })}
-      >
-        <a
-          target="_blank"
-        //   href="https://pro.ant.design/docs/getting-started"
-          rel="noopener noreferrer"
-          className={styles.action}
+    return (
+        <div className={className}>
+            <Tooltip
+                title="写文章"
+            >
+                <a href="" target="_blank" className={styles.action} onClick={(e) => { clickEditorBtn(e) }}>
+                    <Icon type="edit" style={{fontSize: '16px'}}/>
+                </a>
+            </Tooltip>
+        {/* <HeaderSearch
+            className={`${styles.action} ${styles.search}`}
+            placeholder={formatMessage({
+            id: 'component.globalHeader.search',
+            })}
+            dataSource={[
+            formatMessage({
+                id: 'component.globalHeader.search.example1',
+            }),
+            formatMessage({
+                id: 'component.globalHeader.search.example2',
+            }),
+            formatMessage({
+                id: 'component.globalHeader.search.example3',
+            }),
+            ]}
+            onSearch={value => {
+            console.log('input', value);
+            }}
+            onPressEnter={value => {
+            console.log('enter', value);
+            }}
+        /> */}
+        <Tooltip
+            title={formatMessage({
+            id: 'component.globalHeader.help',
+            })}
         >
-          <Icon type="question-circle-o" />
-        </a>
-      </Tooltip>
-      {/* 隐藏默认的头像 */}
-      <Avatar />
-      {/* 隐藏默认的语言选择 */}
-      {/* <SelectLang className={styles.action} /> */}
-    </div>
-  );
+            <a
+            target="_blank"
+            //   href="https://pro.ant.design/docs/getting-started"
+            rel="noopener noreferrer"
+            className={styles.action}
+            >
+            <Icon type="question-circle-o" style={{fontSize: '16px'}}/>
+            </a>
+        </Tooltip>
+        {/* 隐藏默认的头像 */}
+        <Avatar />
+        {/* 隐藏默认的语言选择 */}
+        {/* <SelectLang className={styles.action} /> */}
+        </div>
+    );
 };
 
 export default connect(({ settings }: ConnectState) => ({
-  theme: settings.navTheme,
-  layout: settings.layout,
+    theme: settings.navTheme,
+    layout: settings.layout,
 }))(GlobalHeaderRight);

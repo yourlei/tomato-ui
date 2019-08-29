@@ -51,7 +51,6 @@ const EditorModel: EditorModelType = {
         * generateUrl(_, { call, put }) {
             const session = JSON.parse(getUser())
             const articleId = "546734fkdfd"
-            
             router.push(`/editor/${session.id}/${articleId}`)
             // yield put(routerRedux.replace({
             //     pathname: `/editor/${session.id}/${articleId}`,

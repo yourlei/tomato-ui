@@ -4,17 +4,18 @@ import { Table, Divider, Form, Popconfirm } from "antd";
 import { ConnectProps, ConnectState, ArticleModelState, } from "@/models/connect";
 
 import SearchForm from "./components/Form";
+import { routerRedux } from "dva/router";
 
 interface ArticleComponentProps extends ConnectProps {
     article: ArticleModelState;
 }
 
 class ArticleComponent extends React.Component<ArticleComponentProps> {
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {
-    //     }
-    // }
+    constructor(props) {
+        super(props)
+        this.state = {
+        }
+    }
     componentDidMount() {
         const { dispatch } = this.props
         dispatch({
@@ -22,10 +23,9 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
             payload: {}
         })
     }
-    
+
     // 删除文章
     handleDelete = (flag, id) => {
-        // console.log(id, '........delete')
         const { dispatch } = this.props
         dispatch({
             type: "article/delArticle",
@@ -36,6 +36,14 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
     // 发布文章
     handleUpdate = (flag, id) => {
         console.log(id, '........update')
+    }
+
+    // 查看文章
+    handleEditor= (record) => {
+        const { dispatch } = this.props
+        dispatch(routerRedux.push({
+            pathname: "/editor/kjjjjsfdsfk"
+        }))
     }
 
     render() {
@@ -71,7 +79,7 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
                         <a href="">发布</a>
                     </Popconfirm>
                     <Divider type="vertical" /> 
-                    <a href="">查看 {record.name}</a>
+                    <span onClick={() => { this.handleEditor(record) }}>查看</span>
                     <Divider type="vertical" />
                     <Popconfirm title="是否要删除该文章" onConfirm={() => this.handleDelete(true, record.id)}>
                         <a href="">删除</a>

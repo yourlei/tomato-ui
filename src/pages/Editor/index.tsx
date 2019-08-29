@@ -9,7 +9,7 @@ import { Form, Input, message } from "antd";
 import { WrappedFormUtils } from "antd/es/form/Form";
 import { ConnectState, } from "@/models/connect";
 import EditableTagGroup from "./components/MyTag";
-import { create, edit } from '@/services/article';
+import { create, edit, query } from '@/services/article';
 
 export interface FormUtil {
     form?: WrappedFormUtils;
@@ -135,7 +135,7 @@ class Editor extends React.Component<FormUtil, any> {
         return (
             <div>
                 <Form>
-                    <FormItem label="文章标题">
+                    <FormItem >
                         {getFieldDecorator("title", {
                             rules: [
                                 { required: true, message: "请输入文章标题" }
