@@ -79,7 +79,8 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
                         <a href="">发布</a>
                     </Popconfirm>
                     <Divider type="vertical" /> 
-                    <span onClick={() => { this.handleEditor(record) }}>查看</span>
+                    {/* <span onClick={() => { this.handleEditor(record) }}>查看</span> */}
+                    <a href={`/markdown/editor/${record.id}`} target="_blank">编辑</a>
                     <Divider type="vertical" />
                     <Popconfirm title="是否要删除该文章" onConfirm={() => this.handleDelete(true, record.id)}>
                         <a href="">删除</a>

@@ -9,7 +9,7 @@ import { Form, Input, message } from "antd";
 import { WrappedFormUtils } from "antd/es/form/Form";
 import { ConnectState, } from "@/models/connect";
 import EditableTagGroup from "./components/MyTag";
-import { create, edit, query } from '@/services/article';
+import { create, edit, query, show } from '@/services/article';
 
 export interface FormUtil {
     form?: WrappedFormUtils;
@@ -28,10 +28,22 @@ class Editor extends React.Component<FormUtil, any> {
         uuid: "",
         title: "",
         // 创建一个空的editorState作为初始值
-        editorState: BraftEditor.createEditorState(null),
+        editorState: BraftEditor.createEditorState("你好"),
         dispatch: Function,
     }
     async componentDidMount () {
+        console.log(location.href, "init editor...")
+        const actionType = location.href.includes("action")
+        if (!actionType) {
+            const id = (location.pathname.split("/")).pop()
+            const articleInfo = await show(id)
+            const {code ,data} = articleInfo
+            console.log(data.content, "============")
+            // 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorStat
+            this.setState({
+                editorState: BraftEditor.createEditorState(data.content)
+            })
+        }
         // 假设此处从服务端获取html格式的编辑器内容
         // const htmlContent = await fetchEditorContent()
         // 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorStat
@@ -100,7 +112,7 @@ class Editor extends React.Component<FormUtil, any> {
         const { 
             form: {
                 getFieldDecorator
-            } 
+            },
         } = this.props
         const FormItem = Form.Item;
         const { editorState } = this.state
@@ -148,6 +160,8 @@ class Editor extends React.Component<FormUtil, any> {
                         onChange={this.handleEditorChange}
                         onSave={this.submitContent}
                         extendControls={extendControls}
+                        defaultValue={}
+                        
                     />
                     <EditableTagGroup/>
                 </Form>

@@ -19,6 +19,10 @@ export async function create(params: object): Promise<any> {
 export async function delArticle(id: string): Promise<any> {
     return request.delete(`${ServerAPI}/admin/article/${id}`)
 }
+// 获取文章详情
+export async function show(id: string): Promise<any> {
+    return request.get(`${ServerAPI}/admin/article/${id}`)
+}
 // 编辑文章
 export async function edit(id: string, params: object): Promise<any> {
     return request.put(`${ServerAPI}/admin/article/${id}`, { ...params })

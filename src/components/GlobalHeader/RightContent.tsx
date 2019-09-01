@@ -23,21 +23,13 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
     if (theme === 'dark' && layout === 'topmenu') {
         className = `${styles.right}  ${styles.dark}`;
     }
-    // 点击写文章按钮
-    const clickEditorBtn = (e) => {
-        // e.preventDefault()
-        location.href="/markdown/editor"
-        // dispatch(routerRedux.push({
-        //     pathname: "/markdown/editor"
-        // }))
-    }
 
     return (
         <div className={className}>
             <Tooltip
                 title="写文章"
             >
-                <a href="" target="_blank" className={styles.action} onClick={(e) => { clickEditorBtn(e) }}>
+                <a href="/markdown/editor?action=1" target="_blank" className={styles.action}>
                     <Icon type="edit" style={{fontSize: '16px'}}/>
                 </a>
             </Tooltip>

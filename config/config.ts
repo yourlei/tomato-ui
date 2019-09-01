@@ -94,9 +94,7 @@ export default {
         //   component: "./Login"
         // },
         {
-            path: '/markdown/editor',
-            // name: '写文章',
-            // icon: 'medium',
+            path: '/markdown/editor/:id?',
             component: './Editor'
         },
         {
@@ -111,12 +109,6 @@ export default {
                     icon: 'project',
                     component: './Article',
                 },
-                // {
-                //     path: '/editor/:id?/:id?',
-                //     name: '写文章',
-                //     icon: 'medium',
-                //     component: './Editor'
-                // },
                 {
                     component: './404',
                 },
