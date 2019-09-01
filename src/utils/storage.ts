@@ -6,8 +6,16 @@ export function setUser(userData) {
   localStorage.setItem("currentUser", JSON.stringify(userData))
 }
 
-export function getUser() {
-  return localStorage.getItem("currentUser")
+export function getUser(key?: string) {
+    const user = localStorage.getItem("currentUser")
+    if (!user) {
+        return null
+    }
+    if (arguments.length) {
+        return JSON.parse(user)[`${key}`]
+    }
+
+    return JSON.parse(user)
 }
 
 /**

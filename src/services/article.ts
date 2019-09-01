@@ -25,5 +25,9 @@ export async function show(id: string): Promise<any> {
 }
 // 编辑文章
 export async function edit(id: string, params: object): Promise<any> {
-    return request.put(`${ServerAPI}/admin/article/${id}`, { ...params })
+    return request.put(`${ServerAPI}/admin/article/${id}`, { 
+        data:{
+            ...params
+        }
+    })
 }
