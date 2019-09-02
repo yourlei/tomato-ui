@@ -1,15 +1,14 @@
 import { Effect } from "dva";
 import { Subscription } from 'dva';
 import { Reducer } from "redux";
-import { getUser } from "@/utils/storage";
 import { routerRedux } from "dva/router";
-import router from 'umi/router';
+import { message } from "antd";
+import { getUser } from "@/utils/storage";
+import { create, edite, show } from "@/services/article"
 
 export interface Editor {
-    id: string;
-    userId?: string;
+    uuid?: string;
     title?: string;
-    author?: string;
     content?: string;
 }
 
@@ -21,8 +20,8 @@ export interface EditorModelType {
     namespace: "editor";
     state: EditorModelState;
     effects: {
-        fetch: Effect;
-        generateUrl: Effect;
+        // handleCreate: Effect;
+        // handleEditor: Effect;
     };
     reducers: {
         setState: Reducer<EditorModelState>;
@@ -33,31 +32,13 @@ const EditorModel: EditorModelType = {
     namespace: "editor",
     
     state: {
-        id: "",
-        userId: "",
+        uuid: "",
         title: "",
-        author: "",
         content: "",
     },
 
     effects: {
-        * fetch({ payload }, { call, put }) {
-            // const res = yield call(qeuryArtile, payload)
-            
-        },
-        /**
-         * 通过用户id,文章id生成url路径
-         */
-        * generateUrl(_, { call, put }) {
-            const session = JSON.parse(getUser())
-            const articleId = "546734fkdfd"
-            router.push(`/editor/${session.id}/${articleId}`)
-            // yield put(routerRedux.replace({
-            //     pathname: `/editor/${session.id}/${articleId}`,
-            //     search: ""
-            // }))
-
-        }
+        //
     },
 
     reducers: {
@@ -70,8 +51,7 @@ const EditorModel: EditorModelType = {
     },
 
     subscriptions: {
-        setup({ history, dispatch }): void {
-        },
+        // todo
     }
 }
 

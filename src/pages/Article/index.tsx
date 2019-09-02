@@ -13,8 +13,7 @@ interface ArticleComponentProps extends ConnectProps {
 class ArticleComponent extends React.Component<ArticleComponentProps> {
     constructor(props) {
         super(props)
-        this.state = {
-        }
+        this.state = {}
     }
     componentDidMount() {
         const { dispatch } = this.props

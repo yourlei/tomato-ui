@@ -1,7 +1,8 @@
 import { Effect } from "dva";
 import { Reducer } from "redux";
+import { message } from "antd";
 import { query as qeuryArtile, edit, delArticle } from '@/services/article';
-import { ExportDefaultDeclaration } from "@babel/types";
+
 export interface Article {
     id?: string;
     title?: string;
@@ -43,8 +44,12 @@ const ArticleModel: ArticleModelType = {
     effects: {
         * fetch({ payload }, { call, put }) {
             const res = yield call(qeuryArtile, payload)
-            const { data, total } = res
-            
+            const { code, data, total } = res
+
+            if (code) {
+                message.info(res.msg)
+                return
+            }
             yield put({
                 type: "save",
                 payload: {list: data, total: total} 

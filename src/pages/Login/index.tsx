@@ -10,7 +10,6 @@ import { ConnectState, } from "@/models/connect";
 import { FormUtil } from "@components/Form";
 import styles from "./login.less";
 
-// @Form.create()
 class LoginComponent extends React.Component<FormUtil, any> {
     constructor(props) {
         super(props)
