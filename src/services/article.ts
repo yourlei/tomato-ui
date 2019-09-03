@@ -1,7 +1,10 @@
+/**
+ * 文章模块接口
+ */
 import request from '@/utils/request';
 import config from '../../config/defaultSettings';
 
-const { ServerAPI } = config
+const { ServerAPI } = config;
 
 // 查询文章列表
 export async function query(params: object): Promise<any> {

@@ -1,7 +1,10 @@
+/**
+ * 登录模块接口
+ */
 import request from '@/utils/request';
 import config from '../../config/defaultSettings';
 
-const { ServerAPI } = config
+const { ServerAPI } = config;
 
 export async function loginAPI(params: object): Promise<any> {
     // 后台登录接口

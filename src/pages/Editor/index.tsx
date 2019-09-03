@@ -6,11 +6,11 @@ import { connect } from "dva";
 import { routerRedux } from "dva/router";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
-import { Form, Input, message } from "antd";
+import { Form, Input, message, Tag, Tooltip, Icon } from "antd";
 import { WrappedFormUtils } from "antd/es/form/Form";
 import { ConnectState, } from "@/models/connect";
-import EditableTagGroup from "./components/MyTag";
 import { create, edite, show } from "@/services/article";
+import { bindCategory, unbindCategory } from "@/services/category";
 import { getUser } from "@/utils/storage";
 
 export interface FormUtil {
@@ -26,12 +26,13 @@ class Editor extends React.Component<FormUtil, any> {
         super(props);
     }
     state = {
-        // 当前编辑的文章uuid
         uuid: "",
-        // 文章标题
         title: "",
         // 创建一个空的editorState作为初始值
         editorState: BraftEditor.createEditorState(""),
+        tags: [],
+        inputVisible: false,
+        inputValue: "",
     }
     async componentDidMount() {
         const { dispatch, editor } = this.props;
@@ -79,40 +80,68 @@ class Editor extends React.Component<FormUtil, any> {
         }
 
     }
-    async componentWillMount() {
-        console.log("componentWillMount *************")
-    }
     // 保存编辑器内容
     submitContent = async () => {
-        let title = "";
-        const { form } = this.props;
-        form.validateFields( (err, fieldsValue, this) => {
-            if (err) return;
-            title = fieldsValue.title;
-        })
-        // 在编辑器获得焦点时按下ctrl+s会执行此方法
-        // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
+        const { form: {validateFields} } = this.props;
         const htmlContent = this.state.editorState.toHTML();
-        if (!title) {
-            message.info("标题不能为空");
-            return;
-        }
-        const res = await edite(this.state.uuid, {title, content: htmlContent});
-        if (res.code === 0) {
-            message.info("保存成功");
-        }
+
+        validateFields( async(err, value) => {
+            if (err) return;
+            const fieldValue = { ...value };
+            const res = await edite(this.state.uuid, {
+                title: fieldValue.title, 
+                content: htmlContent
+            })
+
+            if (res.code === 0) {
+                message.info("保存成功");
+            }
+        })
     }
     handleEditorChange = (editorState) => {
         this.setState({ 
             editorState: editorState
         })
-    }
+    };
+    // 删除标签
+    handleCloseTag = async (removedTag) => {
+        const tags = this.state.tags.filter(tag => tag !== removedTag);
+        this.setState({ tags });
+
+        await unbindCategory({name: removedTag, aid: this.state.uuid})
+    };
+    showInput = () => {
+        this.setState({ inputVisible: true }, () => this.input.focus());
+    };
+
+    handleInputChange = (e) => {
+        this.setState({ inputValue: e.target.value });
+    };
+    // 添加分类
+    handleInputConfirm = async () => {
+        const { inputValue } = this.state;
+        let { tags, uuid } = this.state;
+        if (inputValue && tags.indexOf(inputValue) === -1) {
+            tags = [...tags, inputValue];
+        }
+        this.setState({
+            tags,
+            inputVisible: false,
+            inputValue: "",
+        });
+        await bindCategory({name: inputValue, aid: uuid});
+    };
+    
+    saveInputRef = input => (this.input = input);
+
     render() {
         const {
+            dispatch,
             form: {
                 getFieldDecorator
             },
-        } = this.props
+        } = this.props;
+        const { tags, inputVisible, inputValue } = this.state;
         const FormItem = Form.Item;
         const extendControls = [
             "separator",
@@ -159,9 +188,43 @@ class Editor extends React.Component<FormUtil, any> {
                         extendControls={extendControls}
                         value={this.state.editorState}
                     />
-                    <EditableTagGroup/>
                 </Form>
-                
+                {/* 渲染文章标签 */}
+                <div>
+                    {tags.map((tag, index) => {
+                    const isLongTag = tag.length > 20;
+                    const tagElem = (
+                        // closable={index !== 0}
+                        <Tag key={tag} closable={true} onClose={() => this.handleCloseTag(tag)}>
+                        {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                        </Tag>
+                    );
+                    return isLongTag ? (
+                        <Tooltip title={tag} key={tag}>
+                        {tagElem}
+                        </Tooltip>
+                    ) : (
+                        tagElem
+                    );
+                    })}
+                    {inputVisible && (
+                        <Input
+                            ref={this.saveInputRef}
+                            type="text"
+                            size="small"
+                            style={{ width: 78 }}
+                            value={inputValue}
+                            onChange={this.handleInputChange}
+                            // onBlur={this.handleInputConfirm}
+                            onPressEnter={this.handleInputConfirm}
+                        />
+                    )}
+                    {!inputVisible && (
+                        <Tag onClick={this.showInput} style={{ background: "#fff", borderStyle: "dashed" }}>
+                            <Icon type="plus" /> New Tag
+                        </Tag>
+                    )}
+                </div>
             </div>
         )
     }
