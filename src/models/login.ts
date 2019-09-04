@@ -2,7 +2,7 @@ import { Effect } from "dva";
 import { Reducer } from "redux";
 import { message } from "antd";
 import { routerRedux } from 'dva/router';
-import { loginAPI } from "@/services/login";
+import { loginAPI, getRSAKey } from "@/services/login";
 import { setUser, removeUser }  from "@/utils/storage";
 
 export interface LoginModelState {
@@ -10,7 +10,8 @@ export interface LoginModelState {
     userId?:  string | null,
     roleId?:  string | null,
     account?: string | null,
-    token?: string | null
+    token?: string | null,
+    publicKey?: string | null,
 }
 
 export interface ModelType {
@@ -19,9 +20,11 @@ export interface ModelType {
     effects: {
         fetch: Effect;
         logout: Effect;
+        getRsaPublickey: Effect;
     };
     reducers: {
         setState: Reducer<LoginModelState>;
+        savePublicKey: Reducer<LoginModelState>;
     }
 }
 
@@ -33,7 +36,8 @@ const Model: ModelType = {
         userId: null,
         roleId: null,
         account: null,
-        token: null
+        token: null,
+        publicKey: null,
     },
 
     effects: {
@@ -42,8 +46,10 @@ const Model: ModelType = {
             const { code, data } = res
             if (code) {
                 message.info("登录失败, 账户或密码不正确")
+                console.log("==============")
                 return
             }
+            console.log("*****************")
             // 缓存用户信息, token等
             setUser(data)
             // 更新global model isLogin 属性
@@ -83,6 +89,15 @@ const Model: ModelType = {
             })
             // 自动刷新当前页面
             location.replace(location.href);
+        },
+        // 获取RSA公钥
+        * getRsaPublickey({ payload }, {call, put}) {
+            const res = yield call(getRSAKey, {})
+            console.log(res, "==========")
+            yield put({
+                type: "login/savePublicKey",
+                payload: { publicKey: res }
+            })
         }
     },
 
@@ -93,6 +108,12 @@ const Model: ModelType = {
                 userName: payload.name,
                 userId: payload.id,
                 token: payload.token
+            }
+        },
+        savePublicKey(state, { payload }) {
+            return {
+                ...state,
+                ...payload,
             }
         }
     }

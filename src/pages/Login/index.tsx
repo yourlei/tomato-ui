@@ -6,6 +6,7 @@
 import React from "react";
 import { connect } from "dva";
 import { Form, Input, Button } from "antd";
+import { JSEncrypt } from 'jsencrypt';
 import { ConnectState, } from "@/models/connect";
 import { FormUtil } from "@components/Form";
 import styles from "./login.less";
@@ -13,6 +14,13 @@ import styles from "./login.less";
 class LoginComponent extends React.Component<FormUtil, any> {
     constructor(props) {
         super(props)
+    }
+    componentDidMount() {
+        const { dispatch } = this.props
+        dispatch({
+            type: "login/getRsaPublickey",
+            payload: {}
+        })
     }
     // 登录
     handleSubmit = (e) => {
@@ -28,7 +36,7 @@ class LoginComponent extends React.Component<FormUtil, any> {
     }
     render() {
         const FormItem = Form.Item
-        const {form: {getFieldDecorator}} = this.props
+        const {form: {getFieldDecorator}, login} = this.props
         
         return (
             <div className={styles.formWrap}>
@@ -46,10 +54,22 @@ class LoginComponent extends React.Component<FormUtil, any> {
                     <FormItem>
                         {getFieldDecorator("passwd", {
                             rules: [
-                                { required: true, message: "请输入正确的登录密码" }
+                                { required: true, message: "请输入正确的登录密码" },
+                                {
+                                    pattern: /^((?=.*\d)(?=.*[a-zA-Z]))[^\s]{8,18}$/,
+                                    message: '请输入8位以上字母与数字的组合'
+                                }
+                    
                             ],
                         })(
                             <Input placeholder="请输入密码" type="password"/>
+                        )}
+                    </FormItem>
+                    <FormItem>
+                        {getFieldDecorator("publicKey", {
+                            initialValue: login.publicKey
+                        })(
+                            <textarea style={{display: "none"}}></textarea>
                         )}
                     </FormItem>
                     <FormItem>

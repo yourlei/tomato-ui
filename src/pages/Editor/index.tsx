@@ -65,6 +65,7 @@ class Editor extends React.Component<FormUtil, any> {
             }))
         } else {
             const id = (location.pathname.split("/")).pop();
+            // 获取文章详情
             const articleInfo = await show(id);
             const {code, msg, data} = articleInfo;
             if (code) {
@@ -75,6 +76,7 @@ class Editor extends React.Component<FormUtil, any> {
             this.setState({
                 uuid: id,
                 title: data.title,
+                tags: data.cats,
                 editorState: BraftEditor.createEditorState(data.content)
             })
         }

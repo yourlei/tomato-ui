@@ -38,10 +38,10 @@ const errorHandler = (error: { response: Response }): Response => {
         location.replace("/")
         message.info("登录已失效, 请重新登录")
     }
-    // notification.error({
-    //   message: `请求错误 ${status}: ${url}`,
-    //   description: errorText,
-    // });
+    notification.error({
+      message: `请求错误 ${status}: ${url}`,
+      description: errorText,
+    });
   }
   return response;
 };
