@@ -193,7 +193,7 @@ class Editor extends React.Component<FormUtil, any> {
                     />
                 </Form>
                 {/* 渲染文章标签 */}
-                <div>
+                <div className={styles.tagGroup}>
                     {tags.map((tag, index) => {
                     const isLongTag = tag.length > 20;
                     const tagElem = (
@@ -215,7 +215,7 @@ class Editor extends React.Component<FormUtil, any> {
                             ref={this.saveInputRef}
                             type="text"
                             size="small"
-                            style={{ width: 78 }}
+                            style={{ width: 78, height:32 }}
                             value={inputValue}
                             onChange={this.handleInputChange}
                             // onBlur={this.handleInputConfirm}
@@ -223,8 +223,9 @@ class Editor extends React.Component<FormUtil, any> {
                         />
                     )}
                     {!inputVisible && (
-                        <Tag onClick={this.showInput} style={{ background: "#fff", borderStyle: "dashed" }}>
-                            <Icon type="plus" /> New Tag
+                        <Tag onClick={this.showInput} style={{ background: "#fff", color: "#333", borderStyle: "dashed" }}>
+                            <Icon type="plus" className={styles.plusBtn}/>添加分类
+                            {/* 添加分类 */}
                         </Tag>
                     )}
                 </div>

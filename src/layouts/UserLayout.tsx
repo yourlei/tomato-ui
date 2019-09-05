@@ -42,7 +42,7 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
         <div className={styles.lang}>
           {/* <SelectLang /> */}
         </div>
-        <div className={styles.content}>
+        {/* <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
               <Link to="/">
@@ -53,8 +53,8 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
             <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
           </div>
           {children}
-        </div>
-        <DefaultFooter />
+        </div> */}
+        {/* <DefaultFooter /> */}
       </div>
     </DocumentTitle>
   );

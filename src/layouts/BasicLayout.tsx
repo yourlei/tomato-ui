@@ -83,9 +83,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       dispatch({
         type: 'user/fetchCurrent',
       });
-      dispatch({
-        type: 'settings/getSetting',
-      });
+    //   dispatch({
+    //     type: 'settings/getSetting',
+    //   });
       
     }
   }, []);
@@ -127,7 +127,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
             <span>{route.breadcrumbName}</span>
             );
         }}
-        footerRender={footerRender}
+        footerRender={false}
         menuDataRender={menuDataRender}
         formatMessage={formatMessage}
         rightContentRender={rightProps => <RightContent {...rightProps} />}
