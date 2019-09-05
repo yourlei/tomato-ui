@@ -46,10 +46,8 @@ const Model: ModelType = {
             const { code, data } = res
             if (code) {
                 message.info("登录失败, 账户或密码不正确")
-                console.log("==============")
                 return
             }
-            console.log("*****************")
             // 缓存用户信息, token等
             setUser(data)
             // 更新global model isLogin 属性

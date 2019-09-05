@@ -12,6 +12,7 @@ import { ConnectState, } from "@/models/connect";
 import { create, edite, show } from "@/services/article";
 import { bindCategory, unbindCategory } from "@/services/category";
 import { getUser } from "@/utils/storage";
+import styles from "./index.less";
 
 export interface FormUtil {
     form?: WrappedFormUtils;
@@ -181,7 +182,7 @@ class Editor extends React.Component<FormUtil, any> {
                             ],
                             initialValue: this.state.title
                         })(
-                            <Input placeholder="请输入文章标题" style={{"fontSize": "18px"}}/>
+                            <Input placeholder="请输入文章标题" className={styles.input_title}/>
                         )}
                     </FormItem>
                     <BraftEditor 

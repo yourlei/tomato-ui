@@ -1,27 +1,45 @@
-.formWrap {
+.outer {
     position: relative;
     width: 100%;
     height: 100%;
-    > form {
-        padding-top: 3em;
-        position: absolute;
-        width: 20%;
-        height: 280px;
-        left: 50%;
-        top: 50%;
-        margin-left: -10%;
-        margin-top: -140px;
-        background: rgba(0, 0, 0, .3);
-        :global(.ant-form-item-control) {
-            // text-align: center
-            padding-left: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .logo {
+        width: 100%;
+        height: 100%;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+    .middle {
+        position: relative;
+        max-width: 440px;
+        min-width: 320px;
+        min-height: 338px;
+        width: calc(100% - 40px);
+        padding: 2em;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        > form {
+            width: 100%;
+            height: 100%;
+            input {
+                border-radius: 0;
+                border-top-width: 0;
+                border-left-width: 0;
+                border-right-width: 0;
+                border-bottom: 1px solid rgba(112, 112, 112, .45);
+                border-radius: 0;
+                // 去除边框的阴影效果
+                &:hover,
+                &:focus {
+                    border-right-width: 0 !important;
+                    border-bottom: 1px solid rgba(112, 112, 112, .85);
+                    box-shadow: none;
+                }
+            }
         }
     }
-    input {
-        width: 75%;
-        line-height: 5em    
-    }
     button {
-        width: 75%;
+        width: 100%;
     }
 }

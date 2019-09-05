@@ -10,6 +10,7 @@ import { JSEncrypt } from 'jsencrypt';
 import { ConnectState, } from "@/models/connect";
 import { FormUtil } from "@components/Form";
 import styles from "./login.less";
+import Tomato from "../../assets/tomato.svg";
 
 class LoginComponent extends React.Component<FormUtil, any> {
     constructor(props) {
@@ -28,9 +29,14 @@ class LoginComponent extends React.Component<FormUtil, any> {
 
         form.validateFields((err, fieldsValue) => {
             if (err) return;
+            // RSA加密
+            const encrypt = new JSEncrypt();
+            const { account, passwd, publicKey } = fieldsValue;
+            encrypt.setPublicKey(publicKey);
+
             dispatch({
                 type: "login/fetch",
-                payload: { ...fieldsValue }
+                payload: { account, passwd: encrypt.encrypt(passwd) }
             })
         })
     }
@@ -39,45 +45,50 @@ class LoginComponent extends React.Component<FormUtil, any> {
         const {form: {getFieldDecorator}, login} = this.props
         
         return (
-            <div className={styles.formWrap}>
-                <Form>
-                    <FormItem>
-                        {getFieldDecorator("account", {
-                            rules: [
-                                { required: true, message: "请输入正确的邮箱账号" }
-                            ],
-                        })(
-                                
-                            <Input placeholder="请输入邮箱账号" />
-                        )}
-                    </FormItem>
-                    <FormItem>
-                        {getFieldDecorator("passwd", {
-                            rules: [
-                                { required: true, message: "请输入正确的登录密码" },
-                                {
-                                    pattern: /^((?=.*\d)(?=.*[a-zA-Z]))[^\s]{8,18}$/,
-                                    message: '请输入8位以上字母与数字的组合'
-                                }
-                    
-                            ],
-                        })(
-                            <Input placeholder="请输入密码" type="password"/>
-                        )}
-                    </FormItem>
-                    <FormItem>
-                        {getFieldDecorator("publicKey", {
-                            initialValue: login.publicKey
-                        })(
-                            <textarea style={{display: "none"}}></textarea>
-                        )}
-                    </FormItem>
-                    <FormItem>
-                        <Button type="primary" onClick={this.handleSubmit}>
-                            登录
-                        </Button>
-                    </FormItem>
-                </Form>
+            <div className={styles.outer}>
+                <div className={styles.middle}>
+                    <div className={styles.logo}>
+                        <img alt="logo" src={Tomato}/>
+                    </div>
+                    <Form className={styles.inner}>
+                        <FormItem>
+                            {getFieldDecorator("account", {
+                                rules: [
+                                    { required: true, message: "请输入正确的登录账户" }
+                                ],
+                            })(
+                                    
+                                <Input placeholder="请输入邮箱/用户名" autoComplete="off"/>
+                            )}
+                        </FormItem>
+                        <FormItem>
+                            {getFieldDecorator("passwd", {
+                                rules: [
+                                    { required: true, message: "请输入正确的登录密码" },
+                                    {
+                                        pattern: /^((?=.*\d)(?=.*[a-zA-Z]))[^\s]{8,18}$/,
+                                        message: '请输入8位以上字母与数字的组合'
+                                    }
+                        
+                                ],
+                            })(
+                                <Input placeholder="请输入密码" type="password" autoComplete="off"/>
+                            )}
+                        </FormItem>
+                        <FormItem>
+                            {getFieldDecorator("publicKey", {
+                                initialValue: login.publicKey
+                            })(
+                                <textarea style={{display: "none"}}></textarea>
+                            )}
+                        </FormItem>
+                        <FormItem>
+                            <Button type="primary" onClick={this.handleSubmit}>
+                                登录
+                            </Button>
+                        </FormItem>
+                    </Form>
+                </div>
             </div>
         )
     }
