@@ -59,5 +59,7 @@ export default {
   pwa: false,
   iconfontUrl: '',
   // 接口API   
-  ServerAPI: 'http://192.168.80.135:28095/api/v1',
+  //   ServerAPI: 'http://192.168.80.135:28095/api/v1',
+  ServerAPI: "http://139.159.177.70/tomato/api/v1",
+  version: "20190906.1"
 } as DefaultSettings;

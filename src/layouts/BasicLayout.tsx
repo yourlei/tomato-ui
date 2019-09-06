@@ -20,7 +20,8 @@ import { ConnectState, Dispatch } from '@/models/connect';
 import { isAntDesignPro } from '@/utils/utils';
 import logo from '../assets/tomato.svg';
 
-import LoginComponent from "../pages/Login/index"
+import LoginComponent from "../pages/Login/index";
+import defautSetting from "../../config/defaultSettings";
 
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
@@ -89,7 +90,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       
     }
   }, []);
-
+    console.log(`version: ${defautSetting.version}`)
   /**
    * init variables
    */
