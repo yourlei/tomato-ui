@@ -2,6 +2,7 @@ import { Effect } from 'dva';
 import { Reducer } from 'redux';
 
 import { queryCurrent, query as queryUsers } from '@/services/user';
+import avatar from "../assets/avatar.svg"
 
 export interface CurrentUser {
   avatar?: string;
@@ -49,10 +50,13 @@ const UserModel: UserModelType = {
       });
     },
     *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+    //   const response = yield call(queryCurrent);
       yield put({
         type: 'saveCurrentUser',
-        payload: response,
+        payload: {
+            avatar,
+            name: "tomato"
+        },
       });
     },
   },

@@ -34,7 +34,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
   render(): React.ReactNode {
     const { currentUser = {}, menu, login } = this.props;
-    
+    console.log(currentUser, "=======")
     if (menu) {
       return (
         <span className={`${styles.action} ${styles.account}`}>
@@ -69,7 +69,8 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
         </span>
       </HeaderDropdown>
     ) : (
-      <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
+    //   <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
+    <span></span>
     );
   }
 }

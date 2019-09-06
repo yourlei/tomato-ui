@@ -91,7 +91,6 @@ const Model: ModelType = {
         // 获取RSA公钥
         * getRsaPublickey({ payload }, {call, put}) {
             const res = yield call(getRSAKey, {})
-            console.log(res, "==========")
             yield put({
                 type: "login/savePublicKey",
                 payload: { publicKey: res }

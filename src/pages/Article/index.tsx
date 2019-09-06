@@ -22,7 +22,6 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
             payload: {}
         })
     }
-
     // 删除文章
     handleDelete = (flag, id) => {
         const { dispatch } = this.props
@@ -31,12 +30,6 @@ class ArticleComponent extends React.Component<ArticleComponentProps> {
             payload: { id: id}
         })
     }
-
-    // 发布文章
-    handleUpdate = (flag, id) => {
-        console.log(id, '........update')
-    }
-
     // 查看文章
     handleEditor= (record) => {
         const { dispatch } = this.props

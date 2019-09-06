@@ -77,7 +77,7 @@ class LoginComponent extends React.Component<FormUtil, any> {
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator("publicKey", {
-                                initialValue: login.publicKey
+                                initialValue: login.publicKey || ""
                             })(
                                 <textarea style={{display: "none"}}></textarea>
                             )}
